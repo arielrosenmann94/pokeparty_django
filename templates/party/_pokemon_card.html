@@ -1,4 +1,4 @@
-{% load static %}
+{% load static pokemon_tags %}
 <article class="pokemon-card {% if location == 'pc' %}pokemon-card--pc{% endif %}"
   style="--primary-type-color: {{ pokemon.primary_type|lower|type_color }}"
   data-pokemon-id="{{ pokemon.pk }}"
