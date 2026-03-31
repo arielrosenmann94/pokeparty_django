@@ -4,7 +4,7 @@
 
 ## 📚 Sobre este proyecto
 
-> **Este repositorio es la solución del trabajo práctico _PokéParty Optimizer_, desarrollado como ejercicio integrador para los estudiantes del curso de Python con Django en la capacitación SENCE.**
+> **Este repositorio es la solución del trabajo práctico _PokéParty Optimizer_, desarrollado como ejercicio integrador para mis estudiantes del curso de Python con Django en la capacitación SENCE.**
 >
 > El trabajo fue diseñado para la clase de **API REST Framework** del módulo de Django, con el objetivo de practicar la integración con APIs públicas externas, el uso del ORM de Django para persistencia de datos y la construcción de interfaces dinámicas con Django Templates.
 >
