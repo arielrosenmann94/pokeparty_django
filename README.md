@@ -16,7 +16,7 @@
 
 **PokéParty Optimizer** es una aplicación web construida con Django que te permite armar, gestionar y optimizar un equipo de hasta 6 Pokémon utilizando datos reales de stats obtenidos en tiempo real desde la [PokéAPI](https://pokeapi.co/).
 
-La app funciona como un sistema de selección y comparación: podés capturar Pokémon de distintos tipos, ver sus stats completos, reordenar tu equipo por cualquier stat individual y, con un solo clic, el sistema elige automáticamente el equipo de 6 más poderosos de toda tu colección.
+La app funciona como un sistema de selección y comparación: puedes capturar Pokémon de distintos tipos, ver sus stats completos, reordenar tu equipo por cualquier stat individual y, con un solo clic, el sistema elige automáticamente el equipo de 6 más poderosos de toda tu colección.
 
 ### ¿Por qué es interesante para developers?
 
@@ -147,7 +147,7 @@ Luego ajustar `DATABASES` en `pokeparty/settings.py` para leer del `.env`.
 python manage.py runserver
 ```
 
-Abrí el navegador en: **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**
+Abre el navegador en: **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**
 
 ### (Opcional) Panel de administración Django
 
@@ -161,10 +161,10 @@ python manage.py createsuperuser
 ## 📸 Flujo de uso
 
 ```
-1. Seleccionás "Fuego" → capturás Charizard 🔥 → entra a la Party
-2. Seleccionás "Agua"  → capturás Vaporeon 💧 → entra a la Party
+1. Seleccionás "Fuego" → capturas Charizard 🔥 → entra a la Party
+2. Seleccionás "Agua"  → capturas Vaporeon 💧 → entra a la Party
 3. Repetís hasta tener 6 → el 7mo Pokémon va al PC Box
-4. Hacés clic en "Mejor Equipo Posible" →
+4. Haces clic en "Mejor Equipo Posible" →
    el sistema evalúa toda la colección y 
    pone los 6 con mayor totalPower en la Party
 ```
@@ -190,7 +190,7 @@ python manage.py createsuperuser
 DEBUG=True
 SECRET_KEY=your-secret-key-here
 
-# Opcional - si usás PostgreSQL en lugar de SQLite:
+# Opcional - si usas PostgreSQL en lugar de SQLite:
 # DATABASE_URL=postgres://user:password@localhost:5432/pokeparty
 ```
 
