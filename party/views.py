@@ -32,8 +32,19 @@ def _get_party_and_box():
     return party, box
 
 
+SORT_BUTTONS = [
+    ('hp', 'HP', '❤️'),
+    ('attack', 'Ataque', '⚔️'),
+    ('defense', 'Defensa', '🛡️'),
+    ('special_attack', 'Atq.Esp', '🔮'),
+    ('speed', 'Velocidad', '💨'),
+    ('total_power', 'Poder Total', '⚡'),
+]
+
+
 def index(request):
     party, box = _get_party_and_box()
+    empty_slots = max(0, MAX_PARTY_SIZE - len(party))
     context = {
         'party': party,
         'box': box,
@@ -44,6 +55,8 @@ def index(request):
         'party_count': len(party),
         'box_count': len(box),
         'total_count': len(party) + len(box),
+        'empty_party_slots': range(empty_slots),
+        'sort_buttons': SORT_BUTTONS,
     }
     return render(request, 'party/index.html', context)
 

@@ -1,0 +1,107 @@
+{% load static %}
+<article class="pokemon-card {% if location == 'pc' %}pokemon-card--pc{% endif %}"
+  style="--primary-type-color: {{ pokemon.primary_type|lower|type_color }}"
+  data-pokemon-id="{{ pokemon.pk }}"
+  data-pokeapi-id="{{ pokemon.pokeapi_id }}">
+
+  <!-- Card Header -->
+  <div class="card-header">
+    <div class="card-id">#{{ pokemon.pokeapi_id|stringformat:"04d" }}</div>
+    <div class="card-types">
+      {% for t in pokemon.types %}
+      <span class="type-pill type-pill--{{ t }}">{{ t }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Card Image -->
+  <div class="card-image-wrap">
+    {% if pokemon.image_url %}
+    <img
+      class="card-image"
+      src="{{ pokemon.image_url }}"
+      alt="{{ pokemon.name }}"
+      loading="lazy"
+      onerror="this.src='{% static "img/pokeball.svg" %}'"
+    />
+    {% else %}
+    <div class="card-image-placeholder">❓</div>
+    {% endif %}
+    <div class="card-glow"></div>
+  </div>
+
+  <!-- Card Name -->
+  <h3 class="card-name">{{ pokemon.name|capfirst }}</h3>
+
+  <!-- Stats -->
+  <div class="card-stats">
+    <div class="stat-row">
+      <span class="stat-label">HP</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--hp" style="--val: {{ pokemon.hp }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.hp }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">ATK</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--atk" style="--val: {{ pokemon.attack }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.attack }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">DEF</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--def" style="--val: {{ pokemon.defense }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.defense }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">SpA</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--spa" style="--val: {{ pokemon.special_attack }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.special_attack }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">SpD</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--spd" style="--val: {{ pokemon.special_defense }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.special_defense }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">SPD</span>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar stat-bar--speed" style="--val: {{ pokemon.speed }}"></div>
+      </div>
+      <span class="stat-value">{{ pokemon.speed }}</span>
+    </div>
+  </div>
+
+  <!-- Total Power -->
+  <div class="card-power">
+    <span class="power-label">⚡ Poder Total</span>
+    <span class="power-value">{{ pokemon.total_power }}</span>
+  </div>
+
+  <!-- Actions -->
+  <div class="card-actions">
+    {% if location == 'party' %}
+    <form method="post" action="{% url 'party:move_to_pc' pokemon.pk %}" class="card-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn--card btn--secondary" title="Enviar al PC">📦 PC</button>
+    </form>
+    {% else %}
+    <form method="post" action="{% url 'party:move_to_party' pokemon.pk %}" class="card-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn--card btn--success" title="Mover a Party">🎮 Party</button>
+    </form>
+    {% endif %}
+    <form method="post" action="{% url 'party:release' pokemon.pk %}" class="card-form"
+      onsubmit="return confirm('¿Liberar a {{ pokemon.name|capfirst }}?')">
+      {% csrf_token %}
+      <button type="submit" class="btn btn--card btn--danger" title="Liberar">🌿 Liberar</button>
+    </form>
+  </div>
+</article>

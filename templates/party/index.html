@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}PokéParty Optimizer — Armá tu equipo{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- ══ CAPTURE PANEL ══ -->
+  <section class="capture-panel" aria-label="Capturar Pokémon">
+    <div class="panel-header">
+      <h1 class="panel-title">
+        <span class="panel-icon">🎯</span>
+        Capturar Pokémon
+      </h1>
+      <p class="panel-subtitle">Elegí un tipo y capturá un Pokémon aleatorio</p>
+    </div>
+
+    <form method="post" action="{% url 'party:capture' %}" id="capture-form">
+      {% csrf_token %}
+      <div class="type-selector">
+        {% for t in types %}
+        <label class="type-badge" style="--type-color: {{ t.color }}" title="{{ t.label }}">
+          <input type="radio" name="pokemon_type" value="{{ t.name }}" {% if forloop.first %}checked{% endif %} />
+          <span class="type-emoji">{{ t.emoji }}</span>
+          <span class="type-name">{{ t.label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <div class="capture-actions">
+        <button type="submit" class="btn btn--primary btn--lg" id="capture-btn">
+          <span class="btn-icon">🎣</span>
+          Capturar Pokémon Random
+        </button>
+        <div class="counter-badges">
+          <span class="counter-badge counter-badge--party">
+            🎮 Party: <strong>{{ party_count }}/{{ max_party }}</strong>
+          </span>
+          <span class="counter-badge counter-badge--pc">
+            📦 PC Box: <strong>{{ box_count }}</strong>
+          </span>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- ══ SORT / OPTIMIZE PANEL ══ -->
+  {% if total_count > 0 %}
+  <section class="actions-panel" aria-label="Acciones de optimización">
+    <div class="actions-row">
+      <div class="sort-group">
+        <span class="sort-label">📊 Ordenar Party por:</span>
+        <div class="sort-buttons">
+          {% for stat, label, icon in sort_buttons %}
+          <form method="post" action="{% url 'party:sort' %}" class="sort-form">
+            {% csrf_token %}
+            <input type="hidden" name="stat" value="{{ stat }}" />
+            <button type="submit" class="btn btn--sort" title="Ordenar por {{ label }}">
+              {{ icon }} {{ label }}
+            </button>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+      <form method="post" action="{% url 'party:optimize' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--optimize">
+          ✨ Mejor Equipo Posible
+        </button>
+      </form>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ══ PARTY SECTION ══ -->
+  <section class="pokemon-section" aria-label="Tu Party">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span>🎮</span> Tu Party
+        <span class="section-badge">{{ party_count }}/{{ max_party }}</span>
+      </h2>
+      {% if party_count == 0 %}
+      <p class="section-empty">¡Capturá tu primer Pokémon para empezar!</p>
+      {% endif %}
+    </div>
+
+    {% if party %}
+    <div class="pokemon-grid" id="party-grid">
+      {% for pokemon in party %}
+      {% include "party/_pokemon_card.html" with location="party" %}
+      {% endfor %}
+      {% for i in empty_party_slots %}
+      <div class="pokemon-card pokemon-card--empty">
+        <div class="empty-slot">
+          <span class="empty-icon">➕</span>
+          <span class="empty-text">Slot libre</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- ══ PC BOX ══ -->
+  {% if box %}
+  <section class="pokemon-section" aria-label="PC Box">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span>📦</span> PC Box
+        <span class="section-badge section-badge--pc">{{ box_count }}</span>
+      </h2>
+    </div>
+    <div class="pokemon-grid pokemon-grid--pc" id="pc-grid">
+      {% for pokemon in box %}
+      {% include "party/_pokemon_card.html" with location="pc" %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const TYPE_COLORS = {{ type_colors|safe }};
+  const TYPE_EMOJIS = {{ type_emojis|safe }};
+</script>
+<script src="{% static 'js/party.js' %}"></script>
+{% endblock %}
